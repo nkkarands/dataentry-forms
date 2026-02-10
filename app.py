@@ -5,7 +5,7 @@ from datetime import datetime
 from openpyxl import load_workbook
 
 # ==================================================
-# APP & PATH SETUP
+# APP & PATH SETUP (OS-SAFE)
 # ==================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,7 +15,8 @@ app = Flask(
     static_folder=os.path.join(BASE_DIR, "static")
 )
 
-DATA_PATH = r"D:\dataentry forms"
+# ❗ FIX: Windows path removed – now works on Render/Linux
+DATA_PATH = os.path.join(BASE_DIR, "data")
 FILE_PATH = os.path.join(DATA_PATH, "daily_sales.xlsx")
 ITEM_FILE = os.path.join(BASE_DIR, "items_master.xlsx")
 
@@ -132,20 +133,25 @@ def records():
 
 @app.route("/record/<int:tno>")
 def record(tno):
+    if not os.path.exists(FILE_PATH):
+        return jsonify({}), 404
     df = pd.read_excel(FILE_PATH)
     rec = df[df["TNo"] == tno]
+    if rec.empty:
+        return jsonify({}), 404
     return jsonify(rec.iloc[0].to_dict())
 
 @app.route("/delete/<int:tno>", methods=["POST"])
 def delete(tno):
+    if not os.path.exists(FILE_PATH):
+        return jsonify({"status": "not_found"}), 404
     df = pd.read_excel(FILE_PATH)
     df = df[df["TNo"] != tno]
     df.to_excel(FILE_PATH, index=False)
-    return jsonify({"status":"deleted"})
+    return jsonify({"status": "deleted"})
 
 # ==================================================
 # MAIN
 # ==================================================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
-
