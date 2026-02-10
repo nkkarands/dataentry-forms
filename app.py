@@ -53,11 +53,22 @@ def get_next_tno():
 # ==================================================
 @app.route("/")
 def index():
+    template_path = os.path.join(app.template_folder, "index.html")
+
+    if not os.path.exists(template_path):
+        return (
+            f"ERROR: index.html not found.<br>"
+            f"Expected path: {template_path}<br>"
+            f"Files found: {os.listdir(app.template_folder) if os.path.exists(app.template_folder) else 'templates folder missing'}",
+            500
+        )
+
     return render_template(
         "index.html",
         tno=get_next_tno(),
         today=datetime.today().strftime("%d/%m/%Y")
     )
+
 
 @app.route("/items")
 def items():
