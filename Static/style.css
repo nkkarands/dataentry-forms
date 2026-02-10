@@ -1,0 +1,187 @@
+:root {
+  --primary: #1e88e5;
+  --bg: #ffffff;
+  --text: #0d1b2a;
+  --border: #cfd8dc;
+  --section: #e3f2fd;
+}
+
+body.dark {
+  --bg: #0d1b2a;
+  --text: #e3f2fd;
+  --border: #2a3b52;
+  --section: #132f4c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 8px;
+}
+
+form {
+  max-width: 1100px;
+  margin: auto;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+legend {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+/* Form rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.compact-row {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.form-group.compact input {
+  max-width: 90px;
+}
+
+/* Sales grid */
+.sales-grid .row {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 0.5fr; /* Type moved back */
+  gap: 8px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.type-col {
+  text-align: left;
+  padding-left: 6px;
+  padding-right: 0;
+  font-weight: 500;
+}
+
+/* Kg / Rs compact */
+.sales-grid input[type="number"] {
+  width: 55px;
+  max-width: 55px;
+  text-align: right;
+  padding: 4px;
+}
+
+/* Stock Credit read-only */
+#stock_credit {
+  width: 40px;
+  max-width: 40px;
+  padding: 4px 18px 4px 4px;
+  text-align: right;
+  font-weight: bold;
+  background: #eceff1;
+  color: #455a64;
+  border: 1px solid #b0bec5;
+  cursor: not-allowed;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23607d8b'>\
+<path d='M12 2a5 5 0 00-5 5v3H6a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2h-1V7a5 5 0 00-5-5zm-3 8V7a3 3 0 016 0v3H9z'/>\
+</svg>");
+  background-repeat: no-repeat;
+  background-position: right 3px center;
+  background-size: 14px;
+}
+
+/* Negative stock */
+.negative-stock {
+  border: 2px solid #e53935 !important;
+  background: #ffebee !important;
+  color: #b71c1c !important;
+}
+
+@keyframes stockBlink {
+  0% { background-color: #ffebee; }
+  50% { background-color: #ffcdd2; }
+  100% { background-color: #ffebee; }
+}
+
+.stock-blink {
+  animation: stockBlink 0.6s ease-in-out 2;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #b0bec5 !important;
+  cursor: not-allowed;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .form-row,
+  .compact-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sales-grid .row {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .sales-grid input[type="number"],
+  #stock_credit {
+    width: 100%;
+    max-width: unset;
+  }
+
+  .type-col {
+    text-align: left;
+    padding-right: 0;
+  }
+}
+
+
+/* ================= TOAST NOTIFICATION ================= */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d32f2f;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px);
+}
+
